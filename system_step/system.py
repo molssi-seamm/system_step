@@ -51,11 +51,7 @@ class System(seamm.Node):
     """
 
     def __init__(
-        self,
-        flowchart=None,
-        title='System',
-        extension=None,
-        logger=logger
+        self, flowchart=None, title='System', extension=None, logger=logger
     ):
         """A step for System in a SEAMM flowchart.
 
