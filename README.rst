@@ -18,9 +18,14 @@ System Step
    :target: https://codecov.io/gh/molssi-seamm/system_step
    :alt: Code coverage
 
+.. image:: https://img.shields.io/lgtm/grade/python/g/molssi-seamm/system_step.svg?logo=lgtm&logoWidth=18
+   :target: https://lgtm.com/projects/g/molssi-seamm/system_step/context:python
+   :alt: Code Quality
+
 .. image:: https://pyup.io/repos/github/molssi-seamm/system_step/shield.svg
    :target: https://pyup.io/repos/github/molssi-seamm/system_step/
    :alt: Updates for requirements
+
 
 .. image:: https://github.com/molssi-seamm/system_step/workflows/Release/badge.svg
    :target: https://github.com/molssi-seamm/system_step/actions?query=workflow%3ARelease
