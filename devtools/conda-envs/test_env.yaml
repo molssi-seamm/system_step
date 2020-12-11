@@ -23,7 +23,12 @@ dependencies:
     - seamm-util
     - seamm-widgets
 
-      # Testing
+    # Testing
     - codecov
     - yapf
 
+    # Documentation
+    - rinohtype
+    - pygments
+    - sphinx-rtd-theme
+    - pystemmer

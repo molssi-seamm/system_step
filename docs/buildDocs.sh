@@ -16,10 +16,10 @@ set -x
 # INSTALL DEPENDS #
 ###################
  
-apt-get update
-apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python3-stemmer python3-git python3-pip python3-virtualenv python3-setuptools
+# apt-get update
+# apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python3-stemmer python3-git python3-pip python3-virtualenv python3-setuptools
  
-python3 -m pip install --upgrade rinohtype pygments
+# python3 -m pip install --upgrade rinohtype pygments
  
 #####################
 # DECLARE VARIABLES #
@@ -88,8 +88,8 @@ for current_version in ${versions}; do
  
 done
  
-# return to master branch
-git checkout master
+# return to main branch
+git checkout main
  
 #######################
 # Update GitHub Pages #
@@ -99,7 +99,9 @@ git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
  
 pushd "${docroot}"
- 
+
+ls -laR .
+
 # don't bother maintaining history; just generate fresh
 git init
 git remote add deploy "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
