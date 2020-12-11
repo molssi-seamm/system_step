@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class SystemParameters(seamm.Parameters):
-    """
-    The control parameters for System.
+    """The control parameters for System.
 
     The developer will add a dictionary of Parameters to this class.
     The keys are parameters for the current plugin, which themselves
@@ -23,39 +22,34 @@ class SystemParameters(seamm.Parameters):
 
     Attributes
     ----------
-    parameters : {'kind', 'default', 'default_units', 'enumeration',
-                  'format_string', description', help_text'}
+    parameters : dict(str)
         A dictionary containing the parameters for the current step.
         Each key of the dictionary is a dictionary that contains the
-        the following keys: kind, default, default_units, enumeration,
-        format_string, description and help text.
+        the following keys:
 
-    parameters['kind']: custom
-        Specifies the kind of a variable. While the 'kind' of a variable might
-        be a numeric value, it may still have enumerated custom values
-        meaningful to the user. For instance, if the parameter is
-        a convergence criterion for an optimizer, custom values like 'normal',
-        'precise', etc, might be adequate. In addition, any
-        parameter can be set to a variable of expression, indicated by having
-        '$' as the first character in the field. For example, $OPTIMIZER_CONV.
-
-    parameters['default'] : 'integer' or 'float' or 'string' or 'boolean' or
-        'enum' The default value of the parameter, used to reset it.
-
-    parameters['default_units'] : str
-        The default units, used for resetting the value.
-
-    parameters['enumeration']: tuple
-        A tuple of enumerated values.
-
-    parameters['format_string']: str
-        A format string for 'pretty' output.
-
-    parameters['description']: str
-        A short string used as a prompt in the GUI.
-
-    parameters['help_text']: tuple
-        A longer string to display as help for the user.
+        kind : custom
+            Specifies the kind of a variable. While the 'kind' of a
+            variable might be a numeric value, it may still have
+            enumerated custom values meaningful to the user. For
+            instance, if the parameter is a convergence criterion for
+            an optimizer, custom values like 'normal', 'precise', etc,
+            might be adequate. In addition, any parameter can be set
+            to a variable of expression, indicated by having '$' as
+            the first character in the field. For example,
+            $OPTIMIZER_CONV.
+        default : str
+            One of 'integer', 'float', 'string', 'boolean' or 'enum'. The
+            default value of the parameter, used to reset it.
+        default_units : str
+            The default units, used for resetting the value.
+        enumeration : tuple
+            A tuple of enumerated values.
+        format_string : str
+            A format string for 'pretty' output.
+        description : str
+            A short string used as a prompt in the GUI.
+        help_text : tuple
+            A longer string to display as help for the user.
 
     See Also
     --------

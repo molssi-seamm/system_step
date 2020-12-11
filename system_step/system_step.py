@@ -16,17 +16,17 @@ class SystemStep(object):
         A human-readable description of this step. It can be
         several lines long, and needs to be clear to non-expert users.
         It contains the following keys: description, group, name.
-    my_description['description'] : tuple
-        A description of the System step. It must be
-        clear to non-experts.
-    my_description['group'] : str
-        Which group in the menus to put this step. If the group does
-        not exist it will be created. Common groups are 'Building',
-        'Calculations', 'Control' and 'Data'.
-    my_description['name'] : str
-        The name of this step, to be displayed in the menus.
-    """
 
+        description : tuple
+            A description of the System step. It must be
+            clear to non-experts.
+        group : str
+            Which group in the menus to put this step. If the group does
+            not exist it will be created. Common groups are 'Building',
+            'Simulations', 'Control' and 'Data'.
+        name : str
+            The name of this step, to be displayed in the menus.
+    """
     my_description = {
         'description':
             (

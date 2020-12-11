@@ -1,22 +1,19 @@
 Welcome to the documentation for the System Step
-======================================
+================================================
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :titlesonly:
 
-   readme
-   installation
-   usage
-   modules
-   contributing
+   About the system <readme>
+   user/index
+   developer/index
    authors
    history
 
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
