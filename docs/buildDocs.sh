@@ -109,7 +109,7 @@ for current_version in ${versions}; do
       continue
    fi
    cat >> "${docroot}/index.html" <<EOF
-      <p><a href="/${REPO_NAME}/en/${current_version}/">${current_version}/a></p>
+      <p><a href="/${REPO_NAME}/en/${current_version}/">${current_version}</a></p>
 EOF
 done
 
