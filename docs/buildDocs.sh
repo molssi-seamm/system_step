@@ -98,6 +98,9 @@ cat > "${docroot}/index.html" <<EOF
       <title>System Step Documentation</title>
    </head>
    <body>
+      <h1>System Step Documentation</h1>
+      <h2>Branches</h2>
+      <ul>
 EOF
 
 for current_version in ${versions}; do
@@ -109,11 +112,12 @@ for current_version in ${versions}; do
       continue
    fi
    cat >> "${docroot}/index.html" <<EOF
-      <p><a href="/${REPO_NAME}/en/${current_version}/">${current_version}</a></p>
+        <li><a href="/${REPO_NAME}/en/${current_version}/">${current_version}</a></li>
 EOF
 done
 
 cat >> "${docroot}/index.html" <<EOF
+      </ul>
    </body>
 </html>
 EOF
