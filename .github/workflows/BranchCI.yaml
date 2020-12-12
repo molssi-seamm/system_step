@@ -1,4 +1,4 @@
-name: LightCI
+name: BranchCI
 
 on:
   push:
