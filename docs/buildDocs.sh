@@ -38,7 +38,7 @@ for current_version in ${versions}; do
  
    # make the current language available to conf.py
    export current_version
-   git checkout ${current_version}
+   git checkout --no-guess ${current_version}
  
    echo "INFO: Building sites for ${current_version}"
  
@@ -113,7 +113,7 @@ cat > index.html <<EOF
 EOF
 
 for current_version in ${versions}; do
-   git checkout ${current_version}
+   git checkout --no-guess ${current_version}
 
    # skip this branch if it doesn't have our docs dir & sphinx config
    if [ ! -e 'docs/conf.py' ]; then
@@ -157,4 +157,4 @@ git push deploy gh-pages --force
 popd # return to main repo sandbox root
  
 # exit cleanly
-exit 0
+# exit 0
