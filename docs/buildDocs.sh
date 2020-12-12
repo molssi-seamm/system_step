@@ -88,22 +88,10 @@ git checkout main
  
 git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
- 
-pushd "${docroot}"
 
-# ls -laR .
-
-# don't bother maintaining history; just generate fresh
-git init
-git remote add deploy "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-git checkout -b gh-pages
- 
-# add .nojekyll to the root so that github won't 404 on content added to dirs
-# that start with an underscore (_), such as our "_content" dir..
-touch .nojekyll
  
 # add redirect from the docroot to our default docs language/version
-cat > index.html <<EOF
+cat > "${docroot}/index.html" <<EOF
 <!DOCTYPE html>
 <html>
    <head>
@@ -120,15 +108,29 @@ for current_version in ${versions}; do
       echo -e "\tINFO: Couldn't find 'docs/conf.py' (skipped)"
       continue
    fi
-   cat >> index.html <<EOF
+   cat >> "${docroot}/index.html" <<EOF
       <p><a href="/${REPO_NAME}/en/${current_version}/">${current_version}/a></p>
 EOF
 done
 
-cat >> index.html <<EOF
+cat >> "${docroot}/index.html" <<EOF
    </body>
 </html>
 EOF
+
+# Now go to the directory...
+pushd "${docroot}"
+
+# ls -laR .
+
+# don't bother maintaining history; just generate fresh
+git init
+git remote add deploy "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+git checkout -b gh-pages
+ 
+# add .nojekyll to the root so that github won't 404 on content added to dirs
+# that start with an underscore (_), such as our "_content" dir..
+touch .nojekyll
  
 # Add README
 cat > README.md <<EOF
