@@ -12,15 +12,6 @@ set -x
 # Version: 0.2
 ################################################################################
  
-###################
-# INSTALL DEPENDS #
-###################
- 
-# apt-get update
-# apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python3-stemmer python3-git python3-pip python3-virtualenv python3-setuptools
- 
-# python3 -m pip install --upgrade rinohtype pygments
- 
 #####################
 # DECLARE VARIABLES #
 #####################
@@ -71,15 +62,15 @@ for current_version in ${versions}; do
       # HTML #
       sphinx-build -b html docs/ docs/_build/html/${current_language}/${current_version} -D language="${current_language}"
  
-      # PDF #
-      sphinx-build -b rinoh docs/ docs/_build/rinoh -D language="${current_language}"
-      mkdir -p "${docroot}/${current_language}/${current_version}"
-      cp "docs/_build/rinoh/target.pdf" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.pdf"
+      # # PDF #
+      # sphinx-build -b rinoh docs/ docs/_build/rinoh -D language="${current_language}"
+      # mkdir -p "${docroot}/${current_language}/${current_version}"
+      # cp "docs/_build/rinoh/target.pdf" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.pdf"
  
-      # EPUB #
-      sphinx-build -b epub docs/ docs/_build/epub -D language="${current_language}"
-      mkdir -p "${docroot}/${current_language}/${current_version}"
-      cp "docs/_build/epub/target.epub" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.epub"
+      # # EPUB #
+      # sphinx-build -b epub docs/ docs/_build/epub -D language="${current_language}"
+      # mkdir -p "${docroot}/${current_language}/${current_version}"
+      # cp "docs/_build/epub/target.epub" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.epub"
  
       # copy the static assets produced by the above build into our docroot
       rsync -av "docs/_build/html/" "${docroot}/"
@@ -100,7 +91,7 @@ git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
  
 pushd "${docroot}"
 
-ls -laR .
+# ls -laR .
 
 # don't bother maintaining history; just generate fresh
 git init
@@ -116,11 +107,25 @@ cat > index.html <<EOF
 <!DOCTYPE html>
 <html>
    <head>
-      <title>helloWorld Docs</title>
-      <meta http-equiv = "refresh" content="0; url='/${REPO_NAME}/en/master/'" />
+      <title>System Step Documentation</title>
    </head>
    <body>
-      <p>Please wait while you're redirected to our <a href="/${REPO_NAME}/en/master/">documentation</a>.</p>
+EOF
+
+for current_version in ${versions}; do
+   git checkout ${current_version}
+
+   # skip this branch if it doesn't have our docs dir & sphinx config
+   if [ ! -e 'docs/conf.py' ]; then
+      echo -e "\tINFO: Couldn't find 'docs/conf.py' (skipped)"
+      continue
+   fi
+   cat >> index.html <<EOF
+      <p><a href="/${REPO_NAME}/en/${current_version}/">${current_version}/a></p>
+EOF
+done
+
+cat >> index.html <<EOF
    </body>
 </html>
 EOF
