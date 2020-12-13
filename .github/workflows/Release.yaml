@@ -124,6 +124,8 @@ jobs:
         repository_url: https://test.pypi.org/legacy/
         skip_existing: true
     - name: Publish distribution 📦 to PyPI
+      # Don't publish development or release candidate release to PyPi
+      if: !contains(github.ref, 'dev') && !contains(github.ref, 'rc')
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.pypi_password }}
