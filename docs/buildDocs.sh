@@ -12,15 +12,6 @@ set -x
 # Version: 0.2
 ################################################################################
  
-###################
-# INSTALL DEPENDS #
-###################
- 
-# apt-get update
-# apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python3-stemmer python3-git python3-pip python3-virtualenv python3-setuptools
- 
-# python3 -m pip install --upgrade rinohtype pygments
- 
 #####################
 # DECLARE VARIABLES #
 #####################
@@ -47,7 +38,7 @@ for current_version in ${versions}; do
  
    # make the current language available to conf.py
    export current_version
-   git checkout ${current_version}
+   git checkout --no-guess ${current_version}
  
    echo "INFO: Building sites for ${current_version}"
  
@@ -71,15 +62,15 @@ for current_version in ${versions}; do
       # HTML #
       sphinx-build -b html docs/ docs/_build/html/${current_language}/${current_version} -D language="${current_language}"
  
-      # PDF #
-      sphinx-build -b rinoh docs/ docs/_build/rinoh -D language="${current_language}"
-      mkdir -p "${docroot}/${current_language}/${current_version}"
-      cp "docs/_build/rinoh/target.pdf" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.pdf"
+      # # PDF #
+      # sphinx-build -b rinoh docs/ docs/_build/rinoh -D language="${current_language}"
+      # mkdir -p "${docroot}/${current_language}/${current_version}"
+      # cp "docs/_build/rinoh/target.pdf" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.pdf"
  
-      # EPUB #
-      sphinx-build -b epub docs/ docs/_build/epub -D language="${current_language}"
-      mkdir -p "${docroot}/${current_language}/${current_version}"
-      cp "docs/_build/epub/target.epub" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.epub"
+      # # EPUB #
+      # sphinx-build -b epub docs/ docs/_build/epub -D language="${current_language}"
+      # mkdir -p "${docroot}/${current_language}/${current_version}"
+      # cp "docs/_build/epub/target.epub" "${docroot}/${current_language}/${current_version}/helloWorld-docs_${current_language}_${current_version}.epub"
  
       # copy the static assets produced by the above build into our docroot
       rsync -av "docs/_build/html/" "${docroot}/"
@@ -97,10 +88,44 @@ git checkout main
  
 git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
  
+# add redirect from the docroot to our default docs language/version
+cat > "${docroot}/index.html" <<EOF
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>System Step Documentation</title>
+   </head>
+   <body>
+      <h1>System Step Documentation</h1>
+      <h2>Branches</h2>
+      <ul>
+EOF
+
+for current_version in ${versions}; do
+   git checkout --no-guess ${current_version}
+
+   # skip this branch if it doesn't have our docs dir & sphinx config
+   if [ ! -e 'docs/conf.py' ]; then
+      echo -e "\tINFO: Couldn't find 'docs/conf.py' (skipped)"
+      continue
+   fi
+   cat >> "${docroot}/index.html" <<EOF
+        <li><a href="/${REPO_NAME}/en/${current_version}/">${current_version}</a></li>
+EOF
+done
+
+cat >> "${docroot}/index.html" <<EOF
+      </ul>
+   </body>
+</html>
+EOF
+
+# Now go to the directory...
 pushd "${docroot}"
 
-ls -laR .
+# ls -laR .
 
 # don't bother maintaining history; just generate fresh
 git init
@@ -110,20 +135,6 @@ git checkout -b gh-pages
 # add .nojekyll to the root so that github won't 404 on content added to dirs
 # that start with an underscore (_), such as our "_content" dir..
 touch .nojekyll
- 
-# add redirect from the docroot to our default docs language/version
-cat > index.html <<EOF
-<!DOCTYPE html>
-<html>
-   <head>
-      <title>helloWorld Docs</title>
-      <meta http-equiv = "refresh" content="0; url='/${REPO_NAME}/en/master/'" />
-   </head>
-   <body>
-      <p>Please wait while you're redirected to our <a href="/${REPO_NAME}/en/master/">documentation</a>.</p>
-   </body>
-</html>
-EOF
  
 # Add README
 cat > README.md <<EOF
@@ -152,4 +163,4 @@ git push deploy gh-pages --force
 popd # return to main repo sandbox root
  
 # exit cleanly
-exit 0
+# exit 0
