@@ -95,7 +95,8 @@ jobs:
 
   deploy:
     name: PyPi ubuntu-latest Py3.8
-    # Run only for tagged releases.
+    # Run only for tagged releases publishing development or release candidates
+    # only to test.pypi, otherwise to both it and the main pypi.
     if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     needs: [lint-docs, test]
@@ -124,7 +125,6 @@ jobs:
         repository_url: https://test.pypi.org/legacy/
         skip_existing: true
     - name: Publish distribution 📦 to PyPI
-      # Don't publish development or release candidate release to PyPi
       if: !contains(github.ref, 'dev') && !contains(github.ref, 'rc')
       uses: pypa/gh-action-pypi-publish@master
       with:
