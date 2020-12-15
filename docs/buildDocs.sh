@@ -56,6 +56,9 @@ do
 	echo "::warning::Skipping because could not find 'docs/conf.py'"
 	continue
     fi
+
+    # Install this version so the documentation for the API works
+    python -m pip install . --no-deps
  
     languages="en `find docs/locales/ -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \;`"
     for current_language in ${languages}
@@ -70,7 +73,10 @@ do
 
 	# first, cleanup any old builds' static assets
 	make -C docs clean
-	
+
+	# Build the documentation for the code
+	sphinx-apidoc -o docs/developer system_step
+
 	# HTML #
 	sphinx-build -b html docs/ docs/_build/html/${current_language}/${current_version} -D language="${current_language}"
 	
@@ -121,12 +127,25 @@ cat > "${docroot}/dev/index.html" <<EOF
       <ul>
 EOF
 
+cat > "${docroot}/dev/versions.html" <<EOF
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Documentation for the System plug-in for SEAMM</title>
+   </head>
+   <body>
+      <ul>
+EOF
+
 for current_version in ${versions}
 do
     if [ "${current_version}" = "main" ]
     then
 	cat >> "${docroot}/dev/index.html" <<EOF
-        <li><a href="../">Stable version (main)</a></li>
+        <li><a href="../">main -- stable version</a></li>
+EOF
+	cat >> "${docroot}/dev/versions.html" <<EOF
+        <li><a href="../">main -- stable version</a></li>
 EOF
     fi
 done
@@ -144,10 +163,19 @@ do
 	cat >> "${docroot}/dev/index.html" <<EOF
         <li><a href="en/${current_version}/">${current_version}</a></li>
 EOF
+	cat >> "${docroot}/dev/versions.html" <<EOF
+        <li><a href="en/${current_version}/">${current_version}</a></li>
+EOF
     fi
 done
 
 cat >> "${docroot}/dev/index.html" <<EOF
+      </ul>
+   </body>
+</html>
+EOF
+ 
+cat >> "${docroot}/dev/versions.html" <<EOF
       </ul>
    </body>
 </html>

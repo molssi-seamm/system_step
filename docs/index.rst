@@ -13,7 +13,23 @@ Contents:
    authors
    history
 
+--------
+   
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+
+   Back to SEAMM documentation <https://molssi-seamm.github.io>
+
 Indices and tables
 ==================
 
 * :ref:`search`
+
+Documentation Versions
+======================
+
+.. raw:: html
+
+   <iframe
+   src="https://molssi-seamm.github.io/system_step/dev/versions.html" title="Documentation Versions"></iframe>
