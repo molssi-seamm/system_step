@@ -32,4 +32,7 @@ Documentation Versions
 .. raw:: html
 
    <iframe
-   src="https://molssi-seamm.github.io/system_step/dev/versions.html" title="Documentation Versions"></iframe>
+   src="https://molssi-seamm.github.io/system_step/dev/versions.html"
+   title="Documentation Versions"  style="border:none;">
+   </iframe>
+
