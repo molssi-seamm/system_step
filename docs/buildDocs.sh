@@ -132,7 +132,7 @@ cat > "${docroot}/dev/versions.html" <<EOF
 <html>
    <head>
       <title>Documentation for the System plug-in for SEAMM</title>
-      <base>href="https://molssi-seamm.github.io/system_step/dev/" target="_parent">
+      <base href="https://molssi-seamm.github.io/system_step/dev/" target="_parent">
    </head>
    <body>
       <ul>
