@@ -13,6 +13,10 @@ Contents:
    authors
    history
 
+   --------
+   
+   Back to SEAMM documentation <https://molssi-seamm.github.io>
+
 Indices and tables
 ==================
 
