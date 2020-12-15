@@ -132,7 +132,6 @@ cat > "${docroot}/dev/versions.html" <<EOF
 <html>
    <head>
       <title>Documentation for the System plug-in for SEAMM</title>
-      <base href="https://molssi-seamm.github.io/system_step/dev/" target="_parent">
    </head>
    <body>
       <ul>
@@ -146,7 +145,7 @@ do
         <li><a href="../">main -- stable version</a></li>
 EOF
 	cat >> "${docroot}/dev/versions.html" <<EOF
-        <li><a href="../">main -- stable version</a></li>
+        <li><a href="../" target="_parent">main -- stable version</a></li>
 EOF
     fi
 done
@@ -165,7 +164,7 @@ do
         <li><a href="en/${current_version}/">${current_version}</a></li>
 EOF
 	cat >> "${docroot}/dev/versions.html" <<EOF
-        <li><a href="en/${current_version}/">${current_version}</a></li>
+        <li><a href="en/${current_version}/" target="_parent">${current_version}</a></li>
 EOF
     fi
 done
