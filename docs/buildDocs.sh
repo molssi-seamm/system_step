@@ -56,6 +56,9 @@ do
 	echo "::warning::Skipping because could not find 'docs/conf.py'"
 	continue
     fi
+
+    # Install this version so the documentation for the API works
+    python -m pip install . --no-deps
  
     languages="en `find docs/locales/ -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \;`"
     for current_language in ${languages}
@@ -70,7 +73,10 @@ do
 
 	# first, cleanup any old builds' static assets
 	make -C docs clean
-	
+
+	# Build the documentation for the code
+	sphinx-apidoc -o docs/developer system_step
+
 	# HTML #
 	sphinx-build -b html docs/ docs/_build/html/${current_language}/${current_version} -D language="${current_language}"
 	
