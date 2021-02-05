@@ -2,46 +2,38 @@
 System Step
 ===========
 
-| |pull| |CI| |docs| |coverage| |lgtm| |PyUp|
-| |Release| |PyPi|
+.. image:: https://img.shields.io/github/issues-pr-raw/molssi-seamm/system_step
+   :target: https://github.com/molssi-seamm/system_step/pulls
+   :alt: GitHub pull requests
+
+.. image:: https://github.com/molssi-seamm/system_step/workflows/CI/badge.svg
+   :target: https://github.com/molssi-seamm/system_step/actions
+   :alt: Build Status
+
+.. image:: https://codecov.io/gh/molssi-seamm/system_step/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/molssi-seamm/system_step
+   :alt: Code Coverage
+
+.. image:: https://img.shields.io/lgtm/grade/python/g/molssi-seamm/system_step.svg?logo=lgtm&logoWidth=18
+   :target: https://lgtm.com/projects/g/molssi-seamm/system_step/context:python
+   :alt: Code Quality
+
+.. image:: https://github.com/molssi-seamm/system_step/workflows/Documentation/badge.svg
+   :target: https://molssi-seamm.github.io/system_step/index.html
+   :alt: Documentation Status
+
+.. image:: https://pyup.io/repos/github/molssi-seamm/system_step/shield.svg
+   :target: https://pyup.io/repos/github/molssi-seamm/system_step/
+   :alt: Updates for Dependencies
+
+.. image:: https://img.shields.io/pypi/v/system_step.svg
+   :target: https://pypi.python.org/pypi/system_step
+   :alt: PyPi VERSION
 
 A plug-in working with the system (molecular, periodic...) in a SEAMM flowchart
 
 * Free software: BSD-3-Clause
-* Developer Documentation: https://system-step.readthedocs.io
-* User Documentation: https://molssi-seamm.github.io
-
-.. |pull| image:: https://img.shields.io/github/issues-pr-raw/molssi-seamm/system_step
-   :target: https://github.com/molssi-seamm/system_step/pulls
-   :alt: GitHub pull requests
-
-.. |CI| image:: https://github.com/molssi-seamm/system_step/workflows/CI/badge.svg
-   :target: https://github.com/molssi-seamm/system_step/actions?query=workflow%3ACI
-   :alt: CI status
-
-.. |docs| image:: https://readthedocs.org/projects/system-step/badge/?version=latest
-   :target: https://system-step.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status
-
-.. |coverage| image:: https://codecov.io/gh/molssi-seamm/system_step/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/molssi-seamm/system_step
-   :alt: Code coverage
-
-.. |lgtm| image:: https://img.shields.io/lgtm/grade/python/g/molssi-seamm/system_step.svg?logo=lgtm&logoWidth=18
-   :target: https://lgtm.com/projects/g/molssi-seamm/system_step/context:python
-   :alt: Code Quality
-
-.. |PyUp| image:: https://pyup.io/repos/github/molssi-seamm/system_step/shield.svg
-   :target: https://pyup.io/repos/github/molssi-seamm/system_step/
-   :alt: Updates for requirements
-
-.. |Release| image:: https://github.com/molssi-seamm/system_step/workflows/Release/badge.svg
-   :target: https://github.com/molssi-seamm/system_step/actions?query=workflow%3ARelease
-   :alt: CI status for releases
-
-.. |PyPi| image:: https://img.shields.io/pypi/v/system_step.svg
-   :target: https://pypi.python.org/pypi/system_step
-   :alt: Release version
+* Documentation: https://molssi-seamm.github.io/system_step/index.html
 
 Features
 --------
