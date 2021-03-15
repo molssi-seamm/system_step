@@ -1,0 +1,53 @@
+system\_step package
+====================
+
+Submodules
+----------
+
+system\_step.metadata module
+----------------------------
+
+.. automodule:: system_step.metadata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+system\_step.system module
+--------------------------
+
+.. automodule:: system_step.system
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+system\_step.system\_parameters module
+--------------------------------------
+
+.. automodule:: system_step.system_parameters
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+system\_step.system\_step module
+--------------------------------
+
+.. automodule:: system_step.system_step
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+system\_step.tk\_system module
+------------------------------
+
+.. automodule:: system_step.tk_system
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: system_step
+   :members:
+   :undoc-members:
+   :show-inheritance:
