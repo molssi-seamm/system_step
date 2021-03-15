@@ -32,8 +32,8 @@ class SystemStep(object):
             (
                 'An interface for System'
             ),
-        'group': 'Simulations',
-        'name': 'System'
+        'group': 'Data',
+        'name': 'System/Configuration'
     }  # yapf: disable
 
     def __init__(self, flowchart=None, gui=None):

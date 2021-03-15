@@ -116,10 +116,87 @@ class System(seamm.Node):
         if not P:
             P = self.parameters.values_to_dict()
 
-        text = (
-            'Please replace this with a short summary of the '
-            'System step, including key parameters.'
-        )
+        text = ""
+
+        # Handle the system
+        if self.is_expr(P['system operation']):
+            text += (
+                "The value of '{system operation}' will determine whether "
+                "a new system will be created or copied, or if we switch "
+                "to another existing system."
+            )
+        elif 'create' in P['system operation']:
+            if P['system name'] == 'default':
+                text += "A new system will be created, using the default name."
+            else:
+                text += "A new system named '{system name}' will be created"
+        elif 'copy' in P['system operation']:
+            if P['system name'] == 'default':
+                text += (
+                    "A new system named with the default name "
+                    "will be created by copying the system '{system to copy}'."
+                )
+            else:
+                text += (
+                    "A new system named '{system name}' "
+                    "will be created by copying the system '{system to copy}'."
+                )
+        elif 'use' not in P['system operation']:
+            raise RuntimeError(
+                f"Don't recognize the system operation {P['system operation']}"
+            )
+
+        if P['system'] == 'current':
+            text += ' Will continue to use the current system.'
+        elif P['system'] == 'new':
+            text += ' Will use the newly created system.'
+        else:
+            text += " Will use the system '{system}'."
+
+        # Handle the configuration
+        text += "\n"
+        if self.is_expr(P['configuration operation']):
+            text += (
+                "The value of '{configuration operation}' will determine "
+                "whether a new configuration will be created or copied, or if "
+                "we switch to another existing configuration."
+            )
+        elif 'create' in P['configuration operation']:
+            if P['configuration name'] == 'default':
+                text += (
+                    "A new configuration will be created, using the default "
+                    "name."
+                )
+            else:
+                text += (
+                    "A new configuration named '{configuration name}' will be "
+                    "created"
+                )
+        elif 'copy' in P['configuration operation']:
+            if P['configuration name'] == 'default':
+                text += (
+                    "A new configuration named with the default name "
+                    "will be created by copying the configuration "
+                    "'{configuration to copy}'."
+                )
+            else:
+                text += (
+                    "A new configuration named '{configuration name}' "
+                    "will be created by copying the configuration "
+                    "'{configuration to copy}'."
+                )
+        elif 'use' not in P['configuration operation']:
+            raise RuntimeError(
+                "Don't recognize the configuration operation "
+                f"{P['configuration operation']}"
+            )
+
+        if P['configuration'] == 'current':
+            text += ' Will continue to use the current configuration.'
+        elif P['configuration'] == 'new':
+            text += ' Will use the newly created configuration.'
+        else:
+            text += " Will use the configuration '{configuration}'."
 
         return self.header + '\n' + __(text, **P, indent=4 * ' ').__str__()
 
@@ -141,23 +218,88 @@ class System(seamm.Node):
             context=seamm.flowchart_variables._data
         )
 
-        # Print what we are doing
-        printer.important(__(self.description_text(P), indent=self.indent))
+        # Print what we are doing -- getting formatted values for printing
+        PP = self.parameters.current_values_to_dict(
+            context=seamm.flowchart_variables._data,
+            formatted=True,
+            units=False
+        )
+        printer.normal(__(self.description_text(PP), indent=self.indent))
 
-        # Temporary code just to print the parameters. You will need to change
-        # this!
-        for key in P:
-            print('{:>15s} = {}'.format(key, P[key]))
-            printer.normal(
-                __(
-                    '{key:>15s} = {value}',
-                    key=key,
-                    value=P[key],
-                    indent=4 * ' ',
-                    wrap=False,
-                    dedent=False
+        text = ""
+        # And do what we need to do
+        if 'create' in P['system operation']:
+            if P['system name'] == 'default':
+                text += "A new system will be created, using the default name."
+            else:
+                text += "A new system named '{system name}' will be created"
+        elif 'copy' in P['system operation']:
+            if P['system name'] == 'default':
+                text += (
+                    "A new system named with the default name "
+                    "will be created by copying the system '{system to copy}'."
                 )
+            else:
+                text += (
+                    "A new system named '{system name}' "
+                    "will be created by copying the system '{system to copy}'."
+                )
+        elif 'use' not in P['system operation']:
+            raise RuntimeError(
+                f"Don't recognize the system operation {P['system operation']}"
             )
+
+        if P['system'] == 'current':
+            text += ' Will continue to use the current system.'
+        elif P['system'] == 'new':
+            text += ' Will use the newly created system.'
+        else:
+            text += " Will use the system '{system}'."
+
+        # Handle the configuration
+        text += "\n"
+        if self.is_expr(P['configuration operation']):
+            text += (
+                "The value of '{configuration operation}' will determine "
+                "whether a new configuration will be created or copied, or if "
+                "we switch to another existing configuration."
+            )
+        elif 'create' in P['configuration operation']:
+            if P['configuration name'] == 'default':
+                text += (
+                    "A new configuration will be created, using the default "
+                    "name."
+                )
+            else:
+                text += (
+                    "A new configuration named '{configuration name}' will be "
+                    "created"
+                )
+        elif 'copy' in P['configuration operation']:
+            if P['configuration name'] == 'default':
+                text += (
+                    "A new configuration named with the default name "
+                    "will be created by copying the configuration "
+                    "'{configuration to copy}'."
+                )
+            else:
+                text += (
+                    "A new configuration named '{configuration name}' "
+                    "will be created by copying the configuration "
+                    "'{configuration to copy}'."
+                )
+        elif 'use' not in P['configuration operation']:
+            raise RuntimeError(
+                "Don't recognize the configuration operation "
+                f"{P['configuration operation']}"
+            )
+
+        if P['configuration'] == 'current':
+            text += ' Will continue to use the current configuration.'
+        elif P['configuration'] == 'new':
+            text += ' Will use the newly created configuration.'
+        else:
+            text += " Will use the configuration '{configuration}'."
 
         # Analyze the results
         self.analyze()

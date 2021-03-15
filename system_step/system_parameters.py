@@ -72,14 +72,120 @@ class SystemParameters(seamm.Parameters):
     """
 
     parameters = {
-        "time": {
-            "default": 100.0,
-            "kind": "float",
-            "default_units": "ps",
+        "system operation": {
+            "default": 'use an existing system',
+            "kind": "enum",
+            "default_units": None,
+            "enumeration": (
+                'create a new, empty system',
+                'copy an existing system',
+                'use an existing system'
+            ),
+            "format_string": "s",
+            "description": "What you want to do:",
+            "help_text": ("The operation for the simulation system.")
+        },
+        "system to copy": {
+            "default": "current",
+            "kind": "integer",
+            "default_units": None,
+            "enumeration": (
+                "current",
+                "new",
+            ),
+            "format_string": "d",
+            "description": "System to copy:",
+            "help_text": ("The simulation system to copy.")
+        },
+        "system name": {
+            "default": "default",
+            "kind": "string",
+            "default_units": None,
+            "enumeration": (
+                "default",
+            ),
+            "format_string": "s",
+            "description": "Name for the new system:",
+            "help_text": ("The name for the simulation system.")
+        },
+        "system": {
+            "default": "current",
+            "kind": "integer",
+            "default_units": None,
+            "enumeration": (
+                "current",
+                "new",
+            ),
+            "format_string": "d",
+            "description": "Which system to use:",
+            "help_text": ("The simulation system to use.")
+        },
+        "configuration operation": {
+            "default": 'use an existing configuration',
+            "kind": "enum",
+            "default_units": None,
+            "enumeration": (
+                'copy an existing configuration',
+                'use an existing configuration'
+            ),
+            "format_string": "s",
+            "description": "What you want to do:",
+            "help_text": ("The operation for the configuration.")
+        },
+        "configuration to copy": {
+            "default": "current",
+            "kind": "integer",
+            "default_units": None,
+            "enumeration": (
+                "current",
+                "new",
+            ),
+            "format_string": "d",
+            "description": "Configuration to copy:",
+            "help_text": ("The simulation configuration to copy.")
+        },
+        "configuration name": {
+            "default": "default",
+            "kind": "string",
+            "default_units": None,
+            "enumeration": (
+                "default",
+            ),
+            "format_string": "s",
+            "description": "Name for the new configuration:",
+            "help_text": ("The name for the configuration.")
+        },
+        "configuration": {
+            "default": "current",
+            "kind": "integer",
+            "default_units": None,
+            "enumeration": (
+                "current",
+                "new"
+            ),
+            "format_string": "d",
+            "description": "Which configuration to use:",
+            "help_text": ("The configuration to use.")
+        },
+        "results": {
+            "default": {},
+            "kind": "dictionary",
+            "default_units": None,
             "enumeration": tuple(),
-            "format_string": ".1f",
-            "description": "Simulation time:",
-            "help_text": ("The time to simulate in the dynamics run.")
+            "format_string": "",
+            "description": "results",
+            "help_text": ("The results to save to variables or in "
+                          "tables. ")
+        },
+        "create tables": {
+            "default": "yes",
+            "kind": "boolean",
+            "default_units": None,
+            "enumeration": ('yes', 'no'),
+            "format_string": "",
+            "description": "Create tables as needed:",
+            "help_text": ("Whether to create tables as needed for "
+                          "results being saved into tables.")
         },
     }
 

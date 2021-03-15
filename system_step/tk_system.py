@@ -4,6 +4,7 @@
 
 import pprint  # noqa: F401
 import tkinter as tk
+import tkinter.ttk as ttk
 
 import system_step  # noqa: F401
 import seamm
@@ -83,8 +84,6 @@ class TkSystem(seamm.TkNode):
         -------
         None
         """
-        self.dialog = None
-
         super().__init__(
             tk_flowchart=tk_flowchart,
             node=node,
@@ -114,13 +113,65 @@ class TkSystem(seamm.TkNode):
         TkSystem.reset_dialog
         """
 
-        frame = super().create_dialog(title='System')
+        super().create_dialog(
+            title='System', widget='notebook', results_tab=True
+        )
         # Shortcut for parameters
         P = self.node.parameters
 
-        # Then create the widgets
+        # Then create the widgets, first frames for system and configuration
+        s_frame = self['system frame'] = ttk.LabelFrame(
+            self['frame'],
+            borderwidth=4,
+            relief='sunken',
+            text='Simulation System',
+            labelanchor='n',
+            padding=10
+        )
+        c_frame = self['configuration frame'] = ttk.LabelFrame(
+            self['frame'],
+            borderwidth=4,
+            relief='sunken',
+            text='Configuration/Conformer',
+            labelanchor='n',
+            padding=10
+        )
+
+        help_text = (
+            'When choosing a system or configuration, you may use a numerical'
+            '\nvalue, starting with 1, or a negative number to count back from'
+            '\nthe end, starting with -1.'
+            '\n'
+            '\nYou can also use the name -- but if the name is not unique you '
+            "\nwon't know which one you get."
+            "\n"
+            "\nFinally, 'current' refers to the currently selected one and"
+            "\n'new' to the one just created."
+        )
+        w = ttk.Label(self['frame'], text=help_text, justify=tk.LEFT)
+
+        s_frame.grid(row=0, column=0, sticky=tk.EW, pady=10)
+        c_frame.grid(row=1, column=0, sticky=tk.EW, pady=10)
+        w.grid(row=2, column=0, pady=10)
+
         for key in P:
-            self[key] = P[key].widget(frame)
+            if key not in ('results', 'extra keywords', 'create tables'):
+                if 'system' in key:
+                    self[key] = P[key].widget(s_frame)
+                elif 'configuration' in key:
+                    self[key] = P[key].widget(c_frame)
+                else:
+                    self[key] = P[key].widget(self['frame'])
+
+        # Set bindings
+        for name in ('system operation', 'configuration operation'):
+            combobox = self[name].combobox
+            combobox.bind("<<ComboboxSelected>>", self.reset_dialog)
+            combobox.bind("<Return>", self.reset_dialog)
+            combobox.bind("<FocusOut>", self.reset_dialog)
+
+        # Setup the results
+        self.setup_results(system_step.properties, calculation='all')
 
         # and lay them out
         self.reset_dialog()
@@ -149,25 +200,103 @@ class TkSystem(seamm.TkNode):
         TkSystem.create_dialog
         """
 
-        # Remove any widgets previously packed
-        frame = self['frame']
+        # Remove any widgets previously packed for the system
+        frame = self['system frame']
         for slave in frame.grid_slaves():
             slave.grid_forget()
-
-        # Shortcut for parameters
-        P = self.node.parameters
 
         # keep track of the row in a variable, so that the layout is flexible
         # if e.g. rows are skipped to control such as 'method' here
         row = 0
         widgets = []
-        for key in P:
-            self[key].grid(row=row, column=0, sticky=tk.EW)
-            widgets.append(self[key])
+        widgets1 = []
+
+        w = self['system operation']
+        operation = w.get()
+        w.grid(row=row, column=0, columnspan=2, sticky=tk.EW)
+        widgets.append(w)
+        row += 1
+
+        if 'copy' in operation:
+            w = self['system to copy']
+            w.grid(row=row, column=1, sticky=tk.EW)
+            widgets1.append(w)
             row += 1
+
+        if 'create' in operation or 'copy' in operation:
+            w = self['system name']
+            w.grid(row=row, column=1, sticky=tk.EW)
+            widgets1.append(w)
+            row += 1
+
+        w = self['system']
+        value = w.get()
+        if 'create' in operation or 'copy' in operation:
+            w.combobox.config(values=['current', 'new'])
+        else:
+            w.combobox.config(values=['current'])
+            if value == 'new':
+                w.set('current')
+        w.grid(row=row, column=0, columnspan=2, sticky=tk.EW)
+        widgets.append(w)
+        row += 1
 
         # Align the labels
         sw.align_labels(widgets)
+        sw.align_labels(widgets1)
+
+        # Set the widths and expansion
+        frame.columnconfigure(0, minsize=50)
+        frame.columnconfigure(1, weight=1)
+
+        # Remove any widgets previously packed for the configuration
+        frame = self['configuration frame']
+        for slave in frame.grid_slaves():
+            slave.grid_forget()
+
+        # keep track of the row in a variable, so that the layout is flexible
+        # if e.g. rows are skipped to control such as 'method' here
+        row = 0
+        widgets = []
+        widgets1 = []
+
+        w = self['configuration operation']
+        operation = w.get()
+        w.grid(row=row, column=0, columnspan=2, sticky=tk.EW)
+        widgets.append(w)
+        row += 1
+
+        if 'copy' in operation:
+            w = self['configuration to copy']
+            w.grid(row=row, column=1, sticky=tk.EW)
+            widgets1.append(w)
+            row += 1
+
+        if 'create' in operation or 'copy' in operation:
+            w = self['configuration name']
+            w.grid(row=row, column=1, sticky=tk.EW)
+            widgets1.append(w)
+            row += 1
+
+        w = self['configuration']
+        value = w.get()
+        if 'create' in operation or 'copy' in operation:
+            w.combobox.config(values=['current', 'new'])
+        else:
+            w.combobox.config(values=['current'])
+            if value == 'new':
+                w.set('current')
+        w.grid(row=row, column=0, columnspan=2, sticky=tk.EW)
+        widgets.append(w)
+        row += 1
+
+        # Align the labels
+        sw.align_labels(widgets)
+        sw.align_labels(widgets1)
+
+        # Set the widths and expansion
+        frame.columnconfigure(0, minsize=50)
+        frame.columnconfigure(1, weight=1)
 
     def right_click(self, event):
         """
