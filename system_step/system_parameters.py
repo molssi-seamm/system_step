@@ -126,6 +126,7 @@ class SystemParameters(seamm.Parameters):
             "default_units": None,
             "enumeration": (
                 'copy an existing configuration',
+                'create a new configuration',
                 'use an existing configuration'
             ),
             "format_string": "s",
@@ -166,26 +167,6 @@ class SystemParameters(seamm.Parameters):
             "format_string": "d",
             "description": "Which configuration to use:",
             "help_text": ("The configuration to use.")
-        },
-        "results": {
-            "default": {},
-            "kind": "dictionary",
-            "default_units": None,
-            "enumeration": tuple(),
-            "format_string": "",
-            "description": "results",
-            "help_text": ("The results to save to variables or in "
-                          "tables. ")
-        },
-        "create tables": {
-            "default": "yes",
-            "kind": "boolean",
-            "default_units": None,
-            "enumeration": ('yes', 'no'),
-            "format_string": "",
-            "description": "Create tables as needed:",
-            "help_text": ("Whether to create tables as needed for "
-                          "results being saved into tables.")
         },
     }
 

@@ -146,13 +146,6 @@ class System(seamm.Node):
                 f"Don't recognize the system operation {P['system operation']}"
             )
 
-        if P['system'] == 'current':
-            text += ' Will continue to use the current system.'
-        elif P['system'] == 'new':
-            text += ' Will use the newly created system.'
-        else:
-            text += " Will use the system '{system}'."
-
         # Handle the configuration
         text += "\n"
         if self.is_expr(P['configuration operation']):
@@ -191,12 +184,19 @@ class System(seamm.Node):
                 f"{P['configuration operation']}"
             )
 
-        if P['configuration'] == 'current':
-            text += ' Will continue to use the current configuration.'
-        elif P['configuration'] == 'new':
-            text += ' Will use the newly created configuration.'
+        if P['system'] == 'current':
+            text += ' Subsequent steps will continue to use the current system'
+        elif P['system'] == 'new':
+            text += ' Subsequent steps will use the newly created system'
         else:
-            text += " Will use the configuration '{configuration}'."
+            text += " Subsequent steps will use the system '{system}'"
+
+        if P['configuration'] == 'current':
+            text += ' and current configuration.'
+        elif P['configuration'] == 'new':
+            text += ' and the newly created configuration.'
+        else:
+            text += " and the configuration '{configuration}'."
 
         return self.header + '\n' + __(text, **P, indent=4 * ' ').__str__()
 
@@ -226,14 +226,17 @@ class System(seamm.Node):
         )
         printer.normal(__(self.description_text(PP), indent=self.indent))
 
-        text = ""
-        # And do what we need to do
+        # Get the system
+        system_db = self.get_variable('_system_db')
+        # configuration = system_db.system.configuration
+
         if 'create' in P['system operation']:
             if P['system name'] == 'default':
-                text += "A new system will be created, using the default name."
+                system = system_db.create_system()
             else:
-                text += "A new system named '{system name}' will be created"
+                system = system_db.create_system(P['system name'])
         elif 'copy' in P['system operation']:
+            raise NotImplementedError('Cannot copy systems yet.')
             if P['system name'] == 'default':
                 text += (
                     "A new system named with the default name "
@@ -248,59 +251,7 @@ class System(seamm.Node):
             raise RuntimeError(
                 f"Don't recognize the system operation {P['system operation']}"
             )
-
-        if P['system'] == 'current':
-            text += ' Will continue to use the current system.'
-        elif P['system'] == 'new':
-            text += ' Will use the newly created system.'
-        else:
-            text += " Will use the system '{system}'."
-
-        # Handle the configuration
-        text += "\n"
-        if self.is_expr(P['configuration operation']):
-            text += (
-                "The value of '{configuration operation}' will determine "
-                "whether a new configuration will be created or copied, or if "
-                "we switch to another existing configuration."
-            )
-        elif 'create' in P['configuration operation']:
-            if P['configuration name'] == 'default':
-                text += (
-                    "A new configuration will be created, using the default "
-                    "name."
-                )
-            else:
-                text += (
-                    "A new configuration named '{configuration name}' will be "
-                    "created"
-                )
-        elif 'copy' in P['configuration operation']:
-            if P['configuration name'] == 'default':
-                text += (
-                    "A new configuration named with the default name "
-                    "will be created by copying the configuration "
-                    "'{configuration to copy}'."
-                )
-            else:
-                text += (
-                    "A new configuration named '{configuration name}' "
-                    "will be created by copying the configuration "
-                    "'{configuration to copy}'."
-                )
-        elif 'use' not in P['configuration operation']:
-            raise RuntimeError(
-                "Don't recognize the configuration operation "
-                f"{P['configuration operation']}"
-            )
-
-        if P['configuration'] == 'current':
-            text += ' Will continue to use the current configuration.'
-        elif P['configuration'] == 'new':
-            text += ' Will use the newly created configuration.'
-        else:
-            text += " Will use the configuration '{configuration}'."
-
+        
         # Analyze the results
         self.analyze()
 
